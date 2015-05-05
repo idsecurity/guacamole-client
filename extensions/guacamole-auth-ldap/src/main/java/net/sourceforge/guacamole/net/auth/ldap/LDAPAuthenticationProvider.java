@@ -27,6 +27,7 @@ import com.novell.ldap.LDAPAttribute;
 import com.novell.ldap.LDAPConnection;
 import com.novell.ldap.LDAPEntry;
 import com.novell.ldap.LDAPException;
+import com.novell.ldap.LDAPJSSESecureSocketFactory;
 import com.novell.ldap.LDAPSearchResults;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
@@ -161,8 +162,19 @@ public class LDAPAuthenticationProvider extends SimpleAuthenticationProvider {
         // Connect to LDAP server
         LDAPConnection ldapConnection;
         try {
+            //If the property specified by LDAP_TLS is set to true, a TLS
+            //encrypted connection will be established instead of a plain text
+            //connection. For this to work the server certificate or the issuer
+            //certificate must be added to the truststore of the application 
+            //server 
+            Boolean useTls = environment.getProperty(LDAPGuacamoleProperties.LDAP_TLS);
+            if (useTls != null && useTls) {
+                ldapConnection = new LDAPConnection(new LDAPJSSESecureSocketFactory());
+            } else {
+                ldapConnection = new LDAPConnection();
+            }
 
-            ldapConnection = new LDAPConnection();
+            
             ldapConnection.connect(
                     environment.getRequiredProperty(LDAPGuacamoleProperties.LDAP_HOSTNAME),
                     environment.getRequiredProperty(LDAPGuacamoleProperties.LDAP_PORT)
