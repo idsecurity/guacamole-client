@@ -22,7 +22,6 @@
 
 package net.sourceforge.guacamole.net.auth.ldap.properties;
 
-import org.glyptodon.guacamole.properties.BooleanGuacamoleProperty;
 import org.glyptodon.guacamole.properties.IntegerGuacamoleProperty;
 import org.glyptodon.guacamole.properties.StringGuacamoleProperty;
 
@@ -91,16 +90,6 @@ public class LDAPGuacamoleProperties {
 
         @Override
         public String getName() { return "ldap-hostname"; }
-
-    };
-    
-    /**
-     * Use TLS encryption when connecting to the LDAP server
-     */
-    public static final BooleanGuacamoleProperty LDAP_TLS = new BooleanGuacamoleProperty() {
-
-        @Override
-        public String getName() { return "ldap-tls"; }
 
     };
 
